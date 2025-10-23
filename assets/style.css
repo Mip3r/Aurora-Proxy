@@ -1,5 +1,7 @@
 /* Shared site styles for SunMoon Proxy */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Prevent overly-large images from blowing out layouts by default */
+img { max-width: 100%; height: auto; display: inline-block }
 html,body { height: 100%; }
 body {
   font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
@@ -29,7 +31,7 @@ body {
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit }
-.brand img{ width:48px; height:48px; border-radius:8px }
+.brand img{ width:48px; height:48px; max-width:64px; max-height:64px; object-fit:contain; border-radius:8px; display:block }
 .brand .name{ font-weight:700; letter-spacing:2px; font-size:18px }
 
 .nav { margin-left:auto; display:flex; gap:12px }

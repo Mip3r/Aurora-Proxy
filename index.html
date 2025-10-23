@@ -112,6 +112,11 @@
         <a href="browser.html">Browser</a>
         <a href="settings.html">Settings</a>
       </nav>
+      <!-- URL / Search bar -->
+      <form id="navForm" onsubmit="onNavigate(event)" style="margin-left:16px; display:flex; gap:8px; align-items:center;">
+        <input id="urlBar" type="search" placeholder="Go to URL or search..." style="padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit; min-width:220px">
+        <button type="submit" class="cta" style="padding:8px 12px; font-size:14px">Go</button>
+      </form>
     </header>
 
     <div class="main">
@@ -205,6 +210,31 @@
 
     // Kick off version check after page load
     window.addEventListener('load', () => { checkVersion(); });
+
+    // Client navigation / search helper
+    // Set PROXY_BASE to your deployed proxy Worker URL, e.g. 'https://your-worker.mydomain.workers.dev/?url='
+    const PROXY_BASE = '';
+    function isLikelyURL(input){
+      return /^https?:\/\//i.test(input) || /\./.test(input);
+    }
+    function onNavigate(e){
+      e.preventDefault();
+      const val = document.getElementById('urlBar').value.trim();
+      if(!val) return;
+      if(isLikelyURL(val)){
+        const target = /^https?:\/\//i.test(val) ? val : 'https://' + val;
+        if(PROXY_BASE){
+          window.open(PROXY_BASE + encodeURIComponent(target), '_blank');
+        }else{
+          // No proxy configured; open directly in new tab
+          window.open(target, '_blank');
+        }
+      }else{
+        // Treat as search query
+        const q = encodeURIComponent(val);
+        window.open('https://www.google.com/search?q=' + q, '_blank');
+      }
+    }
   </script>
 </body>
 </html>
