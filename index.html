@@ -2,151 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Aurora Browser</title>
+  <title>Aurora Portal</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-      background: black;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 20px;
       box-sizing: border-box;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      z-index: 2;
     }
 
-    input[type="text"] {
-      flex-grow: 1;
-      height: 35px;
-      border-radius: 8px;
-      border: none;
-      padding: 0 15px;
-      font-size: 16px;
-      background: rgba(255,255,255,0.1);
+    body {
+      height: 100vh;
+      background: radial-gradient(ellipse at top, #1a1b28 0%, #0a0b12 80%);
+      overflow: hidden;
       color: white;
-      outline: none;
+      font-family: "Poppins", sans-serif;
     }
 
-    input[type="text"]::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
-
-    button {
-      background: rgba(255,255,255,0.15);
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    iframe {
-      position: absolute;
-      top: 60px;
+    /* Aurora animated gradient */
+    .aurora {
+      position: fixed;
+      top: 0;
       left: 0;
-      width: 100%;
-      height: calc(100% - 60px);
-      border: none;
-      background: white;
-      z-index: 1;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(115deg,
+        #00ffc8, #3f8cff, #a14eff, #ff4e9b, #00ffc8);
+      background-size: 400% 400%;
+      animation: aurora 15s ease infinite;
+      filter: blur(180px);
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    @keyframes aurora {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      backdrop-filter: blur(20px);
+      padding: 60px 100px;
+      box-shadow: 0 0 50px rgba(0,255,255,0.1);
+      transition: 0.4s ease;
+    }
+
+    .container:hover {
+      box-shadow: 0 0 80px rgba(0,255,255,0.2);
+      transform: translate(-50%, -50%) scale(1.02);
+    }
+
+    .title {
+      font-size: 64px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: linear-gradient(to right, #00fff0, #7b5eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+    }
+
+    .nav button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 16px 40px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .nav button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
+      transform: scale(1.08);
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
-  <canvas id="aurora"></canvas>
+  <div class="aurora"></div>
 
-  <div class="topbar">
-    <button onclick="goHome()">🏠</button>
-    <input type="text" id="url" placeholder="Enter website URL...">
-    <button onclick="loadSite()">Go</button>
+  <div class="container">
+    <div class="title">Aurora</div>
+    <div class="nav">
+      <button onclick="window.location='browser.html'">Browser</button>
+      <button onclick="window.location='games.html'">Games</button>
+      <button onclick="window.location='settings.html'">Settings</button>
+    </div>
   </div>
 
-  <iframe id="frame" src="https://example.com"></iframe>
+  <div class="footer" id="version">v?.?.?</div>
 
   <script>
-    // --- Aurora Animation ---
-    const canvas = document.getElementById('aurora');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    const colors = ['#3fefef', '#8a2be2', '#00ff88', '#ff00aa'];
-    let t = 0;
-
-    function drawAurora() {
-      ctx.clearRect(0, 0, w, h);
-      for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        for (let x = 0; x < w; x++) {
-          const y = Math.sin(x * 0.003 + t + i) * 60 + (h / 2) + i * 40;
-          ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = colors[i % colors.length];
-        ctx.lineWidth = 2.5;
-        ctx.globalAlpha = 0.2;
-        ctx.stroke();
-      }
-      t += 0.02;
-      requestAnimationFrame(drawAurora);
-    }
-    drawAurora();
-
-    // --- Browser Logic ---
-    const frame = document.getElementById('frame');
-    const input = document.getElementById('url');
-
-    function loadSite() {
-      let url = input.value.trim();
-      if (!url) return;
-      if (!url.startsWith('http')) {
-        url = 'https://' + url;
-      }
-      frame.src = url;
-    }
-
-    function goHome() {
-      window.location.href = "index.html";
-    }
-
-    // Press Enter to load site
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') loadSite();
-    });
+    fetch('version.txt')
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('version').innerText = 'v' + d.version;
+      })
+      .catch(() => {});
   </script>
 </body>
 </html>
