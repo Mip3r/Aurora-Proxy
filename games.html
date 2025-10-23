@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Games - SunMoon Proxy</title>
+	<link rel="stylesheet" href="assets/style.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<style> .hero{ padding:22px } </style>
+</head>
+<body>
+	<div class="aurora"></div>
+	<div class="app">
+		<header class="header">
+			<a class="brand" href="index.html">
+				<img src="assets/logo.png" alt="logo">
+				<div class="name">SunMoon Proxy</div>
+			</a>
+			<nav class="nav">
+				<a href="index.html">Home</a>
+				<a href="info.html">Info</a>
+			</nav>
+		</header>
+
+		<main class="main">
+			<section class="hero">
+				<div class="title">Games</div>
+				<div class="subtitle">Click a game to open it in an embedded view.</div>
+
+				<div class="games-grid" id="gamesGrid">
+					<!-- Game cards inserted by script -->
+				</div>
+			</section>
+		</main>
+
+	</div>
+
+	<div id="modalBackdrop" class="modal-backdrop">
+		<div class="modal">
+			<div class="controls">
+				<div class="meta">Game</div>
+				<button class="close" onclick="closeModal()">Close</button>
+			</div>
+			<iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
+		</div>
+	</div>
+
+	<script>
+		// A small list of local game pages. Add new games to the folder `games/` and here.
+		const games = [
+			{ title: '1v1.lol', file: 'games/1v1.lol.html', thumb: 'assets/logo.png' },
+			{ title: 'Tomb of the Mask', file: 'games/tomb_of_the_mask.html', thumb: 'assets/logo.png' }
+		];
+
+		const grid = document.getElementById('gamesGrid');
+		games.forEach(g => {
+			const card = document.createElement('div');
+			card.className = 'game-card';
+			card.innerHTML = `<img src="${g.thumb}" alt="${g.title}"><h3>${g.title}</h3><div><button onclick="openModal('${g.file}')">Open</button></div>`;
+			grid.appendChild(card);
+		});
+
+		function openModal(url){
+			document.getElementById('gameFrame').src = url;
+			document.getElementById('modalBackdrop').classList.add('show');
+		}
+		function closeModal(){
+			document.getElementById('gameFrame').src = 'about:blank';
+			document.getElementById('modalBackdrop').classList.remove('show');
+		}
+	</script>
+</body>
+</html>
