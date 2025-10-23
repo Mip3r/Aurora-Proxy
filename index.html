@@ -2,129 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Aurora Portal</title>
+  <title>SunMoon Proxy</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       height: 100vh;
-      background: radial-gradient(ellipse at top, #1a1b28 0%, #0a0b12 80%);
       overflow: hidden;
+      font-family: 'Poppins', sans-serif;
       color: white;
-      font-family: "Poppins", sans-serif;
+      background: radial-gradient(ellipse at bottom, #0a0b12 0%, #000000 100%);
     }
 
-    /* Aurora animated gradient */
+    /* Aurora animated glow background */
     .aurora {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: -50%;
+      left: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(115deg,
+      background: linear-gradient(125deg,
         #00ffc8, #3f8cff, #a14eff, #ff4e9b, #00ffc8);
       background-size: 400% 400%;
-      animation: aurora 15s ease infinite;
-      filter: blur(180px);
+      animation: auroraMove 15s ease infinite;
+      filter: blur(200px);
       z-index: -1;
-      opacity: 0.5;
+      opacity: 0.6;
     }
 
-    @keyframes aurora {
+    @keyframes auroraMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
+    /* Main glass container */
     .container {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      text-align: center;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 25px;
       backdrop-filter: blur(20px);
-      padding: 60px 100px;
-      box-shadow: 0 0 50px rgba(0,255,255,0.1);
-      transition: 0.4s ease;
+      padding: 80px 160px;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(0,255,255,0.2);
+      transition: 0.3s ease;
     }
 
     .container:hover {
-      box-shadow: 0 0 80px rgba(0,255,255,0.2);
+      box-shadow: 0 0 80px rgba(0,255,255,0.3);
       transform: translate(-50%, -50%) scale(1.02);
     }
 
     .title {
       font-size: 64px;
-      letter-spacing: 8px;
-      text-transform: uppercase;
+      letter-spacing: 6px;
       font-weight: 700;
       background: linear-gradient(to right, #00fff0, #7b5eff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 40px;
+      text-transform: uppercase;
     }
 
-    .nav {
+    /* Side buttons */
+    .side {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
-      justify-content: center;
-      gap: 50px;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .nav button {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 16px 40px;
-      color: white;
-      font-size: 18px;
+    .side.left { left: 40px; }
+    .side.right { right: 40px; }
+
+    .side img {
+      width: 60px;
+      height: 60px;
       cursor: pointer;
-      transition: 0.3s ease;
+      opacity: 0.8;
+      transition: 0.2s ease;
     }
 
-    .nav button:hover {
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 20px rgba(0,255,255,0.4);
-      transform: scale(1.08);
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 14px;
-      opacity: 0.6;
+    .side img:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 15px rgba(0,255,255,0.5));
     }
   </style>
 </head>
 <body>
   <div class="aurora"></div>
 
-  <div class="container">
-    <div class="title">Aurora</div>
-    <div class="nav">
-      <button onclick="window.location='browser.html'">Browser</button>
-      <button onclick="window.location='games.html'">Games</button>
-      <button onclick="window.location='settings.html'">Settings</button>
-    </div>
+  <!-- Side buttons -->
+  <div class="side left">
+    <img src="assets/settings_button.png" alt="Settings" onclick="openLink('sm://settings')">
   </div>
 
-  <div class="footer" id="version">v?.?.?</div>
+  <div class="side right">
+    <img src="assets/browser_button.png" alt="Info" onclick="openLink('sm://info')">
+    <img src="assets/games_button.png" alt="Games" onclick="openLink('sm://games')">
+  </div>
+
+  <!-- Center title -->
+  <div class="container">
+    <div class="title">SunMoon Proxy</div>
+  </div>
 
   <script>
-    fetch('version.txt')
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById('version').innerText = 'v' + d.version;
-      })
-      .catch(() => {});
+    // sm:// navigation handler
+    function openLink(url) {
+      try {
+        window.location.href = url;
+      } catch {
+        alert("Custom URL not supported: " + url);
+      }
+    }
   </script>
 </body>
 </html>
