@@ -5,38 +5,61 @@ img { max-width: 100%; height: auto; display: inline-block }
 html,body { height: 100%; }
 body {
   font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: radial-gradient(ellipse at bottom, #0a0b12 0%, #000000 100%);
+  background: #24273a;
   color: #e6f7ff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Aurora animated glow background */
-.aurora{
-  position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-  background: linear-gradient(125deg,#00ffc8,#3f8cff,#a14eff,#ff4e9b,#00ffc8);
-  background-size: 400% 400%; animation: auroraMove 15s ease infinite;
-  filter: blur(200px); z-index: -1; opacity: 0.6;
-}
-@keyframes auroraMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
 /* App shell */
 .app {
-  min-height: 100vh; display: flex; flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-left: 250px; /* Make room for sidebar */
 }
 
 .header {
-  display:flex; align-items:center; gap:16px; padding:18px 28px;
-  backdrop-filter: blur(8px); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 28px;
+  background: #24273a;
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit }
 .brand img{ width:48px; height:48px; max-width:64px; max-height:64px; object-fit:contain; border-radius:8px; display:block }
 .brand .name{ font-weight:700; letter-spacing:2px; font-size:18px }
 
-.nav { margin-left:auto; display:flex; gap:12px }
-.nav a{ color:rgba(230,247,255,0.9); text-decoration:none; padding:8px 12px; border-radius:8px; transition:0.12s }
-.nav a:hover{ background: rgba(255,255,255,0.03); transform:translateY(-2px) }
+.nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background: #24273a;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 50;
+}
+
+.nav a {
+  color: rgba(230,247,255,0.9);
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.03);
+}
 
 .main {
   flex:1; display:flex; align-items:center; justify-content:center; padding:40px;
@@ -58,10 +81,56 @@ body {
 .side img:hover{ transform:scale(1.08); filter:drop-shadow(0 0 12px rgba(0,255,255,0.2)) }
 
 /* Games page */
-.games-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:18px }
-.game-card{ background:rgba(255,255,255,0.02); border-radius:12px; padding:12px; text-align:center; border:1px solid rgba(255,255,255,0.03); cursor:pointer }
-.game-card img{ width:100%; height:140px; object-fit:cover; border-radius:8px; margin-bottom:10px }
-.game-card h3{ font-size:16px; margin-bottom:6px }
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  padding: 0 24px;
+}
+
+.game-card {
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.game-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.game-card h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.play-button {
+  display: inline-block;
+  padding: 10px 24px;
+  background: linear-gradient(90deg,#00c9ff,#7b5eff);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.play-button:hover {
+  opacity: 0.9;
+}
 
 /* Embed modal */
 .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:60 }

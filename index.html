@@ -97,21 +97,20 @@
   </style>
 </head>
 <body>
-  <div class="aurora"></div>
-
   <div class="app">
-    <header class="header">
+    <nav class="nav">
       <a class="brand" href="index.html">
         <img src="assets/logo.png" alt="SunMoon logo">
         <div class="name">SunMoon Proxy</div>
       </a>
+      <a href="index.html">🏠 Home</a>
+      <a href="games.html">🎮 Games</a>
+      <a href="browser.html">🌐 Browser</a>
+      <a href="info.html">ℹ️ Info</a>
+      <a href="settings.html">⚙️ Settings</a>
+    </nav>
 
-      <nav class="nav">
-        <a href="games.html">Games</a>
-        <a href="info.html">Info</a>
-        <a href="browser.html">Browser</a>
-        <a href="settings.html">Settings</a>
-      </nav>
+    <header class="header">
       <!-- URL / Search bar -->
       <form id="navForm" onsubmit="onNavigate(event)" style="margin-left:16px; display:flex; gap:8px; align-items:center;">
         <input id="urlBar" type="search" placeholder="Go to URL or search..." style="padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit; min-width:220px">
@@ -129,12 +128,12 @@
 
     <!-- Side buttons for quick actions -->
     <div class="side left">
-      <img src="assets/settings_button.png" alt="Settings" onclick="location.href='settings.html'">
+      <img src="assets/settings_button.png" alt="Settings" onclick="openLink('sm://settings')">
     </div>
 
     <div class="side right">
-      <img src="assets/browser_button.png" alt="Browser" onclick="location.href='browser.html'">
-      <img src="assets/games_button.png" alt="Games" onclick="location.href='games.html'">
+      <img src="assets/info_button.png" alt="Info" onclick="openLink('sm://info')">
+      <img src="assets/games_button.png" alt="Games" onclick="openLink('sm://games')">
     </div>
 
   </div>
@@ -210,6 +209,29 @@
 
     // Kick off version check after page load
     window.addEventListener('load', () => { checkVersion(); });
+
+    // Handle sm:// protocol navigation
+    function openLink(url) {
+      if (!url.startsWith('sm://')) return;
+      
+      const page = url.replace('sm://', '');
+      switch(page) {
+        case 'games':
+          location.href = 'games.html';
+          break;
+        case 'info':
+          location.href = 'info.html';
+          break;
+        case 'settings':
+          location.href = 'settings.html';
+          break;
+        case 'browser':
+          location.href = 'browser.html';
+          break;
+        default:
+          console.warn('Unknown sm:// link:', url);
+      }
+    }
 
     // Client navigation / search helper
     // Set PROXY_BASE to your deployed proxy Worker URL, e.g. 'https://your-worker.mydomain.workers.dev/?url='

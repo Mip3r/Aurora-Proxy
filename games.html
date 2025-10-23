@@ -10,54 +10,49 @@
 <body>
 	<div class="aurora"></div>
 	<div class="app">
-		<header class="header">
-			<a class="brand" href="index.html">
-				<img src="assets/logo.png" alt="logo">
-				<div class="name">SunMoon Proxy</div>
-			</a>
-			<nav class="nav">
-				<a href="index.html">Home</a>
-				<a href="info.html">Info</a>
-			</nav>
-		</header>
+    <nav class="nav">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="SunMoon logo">
+        <div class="name">SunMoon Proxy</div>
+      </a>
+      <a href="index.html">🏠 Home</a>
+      <a href="games.html">🎮 Games</a>
+      <a href="browser.html">🌐 Browser</a>
+      <a href="info.html">ℹ️ Info</a>
+      <a href="settings.html">⚙️ Settings</a>
+    </nav>
+
+    <header class="header">
 
 		<main class="main">
 			<section class="hero">
 				<div class="title">Games</div>
 				<div class="subtitle">Click a game to open it in an embedded view.</div>
 
-				<div class="games-grid" id="gamesGrid">
-					<!-- Game cards inserted by script -->
+				<div class="games-grid">
+					<!-- Game cards with their own icons that link to dedicated game pages -->
+					<div class="game-card">
+						<img src="assets/game-icons/1v1.png" alt="1v1.lol">
+						<h3>1v1.lol</h3>
+						<div>
+							<a href="games/1v1.lol.html" class="play-button">Play Game</a>
+						</div>
+					</div>
+					
+					<div class="game-card">
+						<img src="assets/game-icons/tomb.png" alt="Tomb of the Mask">
+						<h3>Tomb of the Mask</h3>
+						<div>
+							<a href="games/tomb_of_the_mask.html" class="play-button">Play Game</a>
+						</div>
+					</div>
+					<!-- Add more game cards here -->
 				</div>
 			</section>
 		</main>
-
-	</div>
-
-	<div id="modalBackdrop" class="modal-backdrop">
-		<div class="modal">
-			<div class="controls">
-				<div class="meta">Game</div>
-				<button class="close" onclick="closeModal()">Close</button>
-			</div>
-			<iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
-		</div>
 	</div>
 
 	<script>
-		// A small list of local game pages. Add new games to the folder `games/` and here.
-		const games = [
-			{ title: '1v1.lol', file: 'games/1v1.lol.html', thumb: 'assets/logo.png' },
-			{ title: 'Tomb of the Mask', file: 'games/tomb_of_the_mask.html', thumb: 'assets/logo.png' }
-		];
-
-		const grid = document.getElementById('gamesGrid');
-		games.forEach(g => {
-			const card = document.createElement('div');
-			card.className = 'game-card';
-			card.innerHTML = `<img src="${g.thumb}" alt="${g.title}"><h3>${g.title}</h3><div><button onclick="openModal('${g.file}')">Open</button></div>`;
-			grid.appendChild(card);
-		});
 
 		function openModal(url){
 			document.getElementById('gameFrame').src = url;
@@ -67,6 +62,28 @@
 			document.getElementById('gameFrame').src = 'about:blank';
 			document.getElementById('modalBackdrop').classList.remove('show');
 		}
+    // Handle sm:// protocol navigation
+    function openLink(url) {
+      if (!url.startsWith('sm://')) return;
+      
+      const page = url.replace('sm://', '');
+      switch(page) {
+        case 'games':
+          location.href = 'games.html';
+          break;
+        case 'info':
+          location.href = 'info.html';
+          break;
+        case 'settings':
+          location.href = 'settings.html';
+          break;
+        case 'browser':
+          location.href = 'browser.html';
+          break;
+        default:
+          console.warn('Unknown sm:// link:', url);
+      }
+    }
 	</script>
 </body>
 </html>
